@@ -5,7 +5,7 @@ data = {
     'Age': [ 18, 19, 20, 21, 17, 19, 20, 18, 21, 22, 19, 20, 18, 23, 21, 19],
     'City':  ['Delhi', 'Mumbai', 'Chandigarh', 'Mohali', 'Ludhiana', 'Jaipur', 'Pune', 'Bengaluru', 'Noida','Gurugram', 'Delhi', 'Mumbai', 'Chandigarh', 'Mohali', 'Ludhiana', 'Ropar'],
     'Marks': [8.4, 7.9, 8.6, 7.5, 9.1, 8.2, 8.8, 7.6, 8.9, 7.8, 8.3, 8.7, 7.4, 8.1, 8.5, 9.0]
-    }
+    },
 
 employee_data = {
     'id' : [i for i in range(101, 120)],
