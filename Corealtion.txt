@@ -1,0 +1,276 @@
+'''
+corr(): computes pairwise correlation between numerical columns
+        to measure the strength and direction of relationships.
+        It is mainly used in data analysis and feature selection.
+
+------------------------------------------------
+Syntax
+------------------------------------------------
+    df.corr()
+    df.corr(method='pearson')
+
+------------------------------------------------
+Parameters
+------------------------------------------------
+    method    - correlation method
+                'pearson'  → linear correlation (default)
+                'spearman' → rank correlation
+                'kendall'  → ordinal correlation
+    min_periods - minimum observations required per pair
+
+------------------------------------------------
+What it Does
+------------------------------------------------
+    - Calculates correlation coefficient between columns
+    - Returns a correlation matrix
+    - Ignores non-numeric columns automatically
+    - Output values range from -1 to +1
+
+------------------------------------------------
+Interpretation
+------------------------------------------------
+    +1 → perfect positive correlation
+     0 → no correlation
+    -1 → perfect negative correlation
+
+------------------------------------------------
+Examples: using corr()
+------------------------------------------------
+
+1) Correlation matrix (default: Pearson)
+------------------------------------------------
+    df.corr()
+
+------------------------------------------------
+2) Correlation between two columns
+------------------------------------------------
+    df['Age'].corr(df['Marks'])
+
+------------------------------------------------
+3) Spearman correlation (rank-based)
+------------------------------------------------
+    df.corr(method='spearman')
+
+------------------------------------------------
+4) Selective correlation (specific columns)
+------------------------------------------------
+    df[['Age', 'Salary']].corr()
+
+------------------------------------------------
+5) Handling missing values automatically
+------------------------------------------------
+    df_with_nan = df.copy()
+    df_with_nan.loc[2, 'Marks'] = None
+
+    df_with_nan.corr()
+
+------------------------------------------------
+6) Check correlation of target variable (ML use)
+------------------------------------------------
+    df.corr()['Salary'].sort_values(ascending=False)
+
+------------------------------------------------
+7) Detect multicollinearity (ML preprocessing)
+------------------------------------------------
+    corr_matrix = df.corr()
+    high_corr = corr_matrix[abs(corr_matrix) > 0.8]
+
+------------------------------------------------
+Important Notes
+------------------------------------------------
+    - Uses only numeric columns
+    - Ignores NaN values
+    - Pearson measures linear relation
+    - Spearman measures monotonic relation
+    
+    
+------------------------------------------------
+Important Points
+------------------------------------------------
+    - Does NOT imply causation
+    - Sensitive to outliers (especially Pearson)
+    - Used before ML model training
+    - Helps remove multicollinearity
+
+------------------------------------------------
+Common ML Use Cases
+------------------------------------------------
+    ✔ Feature selection
+    ✔ Detect redundant features
+    ✔ Exploratory Data Analysis (EDA)
+    ✔ Correlation heatmaps
+
+------------------------------------------------
+Professional Tip
+------------------------------------------------
+    Drop or combine highly correlated features
+    to improve model stability and performance.
+'''
+
+
+
+'''
+Why this error occurs even though corr() is said to ignore strings
+------------------------------------------------
+
+Error:
+    ValueError: could not convert string to float: 'Aman'
+
+------------------------------------------------
+Root Cause
+------------------------------------------------
+    In recent pandas versions (>= 2.0):
+
+    - df.corr() tries to internally convert the entire DataFrame
+      to a NumPy float array
+    - During this conversion, string/object columns cause failure
+    - Hence, corr() does NOT silently ignore strings anymore
+
+------------------------------------------------
+Old vs New Pandas Behavior
+------------------------------------------------
+Older pandas (< 2.0):
+    - Object/string columns were silently ignored
+    - df.corr() worked without errors
+
+New pandas (>= 2.0):
+    - Explicit numeric selection is REQUIRED
+    - Otherwise conversion to float fails
+
+------------------------------------------------
+Why Pandas Raises This Error
+------------------------------------------------
+    Internally corr() does:
+        df.to_numpy(dtype=float)
+
+    When it hits:
+        'Aman' → cannot convert to float
+
+    Result:
+        ValueError
+
+------------------------------------------------
+Correct & Professional Solutions
+------------------------------------------------
+
+1) Explicitly select numeric columns (BEST PRACTICE)
+------------------------------------------------
+    df.corr(numeric_only=True)
+
+2) Manual numeric column selection
+------------------------------------------------
+    df.select_dtypes(include='number').corr()
+
+3) For ML (after encoding categorical data)
+------------------------------------------------
+    df_encoded = pd.get_dummies(df, drop_first=True)
+    df_encoded.corr()
+
+------------------------------------------------
+Important Points
+------------------------------------------------
+    - corr() works ONLY on numeric data
+    - Pandas no longer auto-ignores object columns
+    - numeric_only=True is mandatory in modern pandas
+    - This change avoids silent logical bugs
+
+------------------------------------------------
+Professional Tip
+------------------------------------------------
+    Always write:
+        df.corr(numeric_only=True)
+
+    Never rely on pandas to auto-handle dtypes.
+'''
+
+
+
+
+
+'''
+        How to Understand corr() Output
+
+------------------------------------------------
+What corr() returns
+------------------------------------------------
+    - A correlation matrix (DataFrame)
+    - Values range from -1 to +1
+    - Each value represents strength and direction
+      of relationship between two variables
+
+------------------------------------------------
+Correlation Value Meaning
+------------------------------------------------
+    +1.0  → Perfect positive correlation
+    -1.0  → Perfect negative correlation
+     0.0  → No linear correlation
+
+------------------------------------------------
+Strength Interpretation (Rule of Thumb)
+------------------------------------------------
+    |Value| ≥ 0.9  → Very strong
+    |Value| ≥ 0.7  → Strong
+    |Value| ≥ 0.5  → Moderate
+    |Value| ≥ 0.3  → Weak
+    |Value| < 0.3  → Very weak / none
+
+------------------------------------------------
+Sign Interpretation
+------------------------------------------------
+    Positive (+):
+        - Both variables increase together
+        - Example: Age ↑, Salary ↑
+
+    Negative (-):
+        - One increases, other decreases
+        - Example: Price ↑, Demand ↓
+
+------------------------------------------------
+Diagonal Values
+------------------------------------------------
+    - Diagonal is always 1.0
+    - A column correlated with itself
+
+------------------------------------------------
+Example Output
+------------------------------------------------
+            Age   Marks   Salary
+    Age     1.0   0.98     0.95
+    Marks   0.98  1.0      0.93
+    Salary  0.95  0.93     1.0
+
+------------------------------------------------
+How to Read This
+------------------------------------------------
+    - Age vs Marks = 0.98
+        → Very strong positive relationship
+
+    - Marks vs Salary = 0.93
+        → Strong positive relationship
+
+    - Age vs Salary = 0.95
+        → Very strong positive relationship
+
+------------------------------------------------
+Machine Learning Perspective
+------------------------------------------------
+    ✔ High correlation with target → useful feature
+    ✘ Very high correlation between features
+      → multicollinearity risk
+
+------------------------------------------------
+Common Mistakes
+------------------------------------------------
+    - Correlation ≠ causation
+    - Only measures linear relationships
+    - Sensitive to outliers
+
+------------------------------------------------
+Professional Tip
+------------------------------------------------
+    Use corr() for:
+        - Feature selection
+        - Multicollinearity detection
+        - Exploratory Data Analysis (EDA)
+'''
+

@@ -4,7 +4,7 @@ import pandas as pd
 
 data = {
     'Name': ['Aman', 'Rohit', 'Sahil', 'Kunal', 'Neha', 'Anjali', 'Priya', 'Simran','Arjun', 'Vikas', 'Pooja', 'Nikhil','Riya', 'Sandeep', 'Karan', 'Isha'],
-    'Age': [ 18, 19, 20, 21, 17, 19, 20, 18, 21, 22, 19, 20, 18, 23, 21, 19],
+    'Age': [ 18, 19, 20, 21, 17, 19, 20, 10, 21, 22, 19, 20, 13, 23, 21, 19],
     'City':  ['Delhi', 'Mumbai', 'Chandigarh', 'Mohali', 'Ludhiana', 'Jaipur', 'Pune', 'Bengaluru', 'Noida','Gurugram', 'Delhi', 'Mumbai', 'Chandigarh', 'Mohali', 'Ludhiana', 'Ropar'],
     'Marks': [8.4, 7.9, 8.6, 7.5, 9.1, 8.2, 8.8, 7.6, 8.9, 7.8, 8.3, 8.7, 7.4, 8.1, 8.5, 9.0]
     }
@@ -58,3 +58,9 @@ print('\n\nAge less than 20 and Marks greater than 8.2\n', x)
 #selecting data where Age is > 20 OR Marks is > 8.2
 y = df[(df['Age'] > 20) | (df['Marks'] > 8.2)]
 print('\n\nAge greater than 20 or Marks greater than 8.2\n', y)
+
+
+print(df[df['Age']== 18]['City']) # returns : row_no column_value
+
+#-------Converting the dataframe to numpy array using values function:: ------------------
+print('\n\n.values convertes the pandas series or dataframe to numpy array:\n', (df[df.columns[:-1]].values))
